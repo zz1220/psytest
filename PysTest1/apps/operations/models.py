@@ -1,0 +1,37 @@
+from datetime import datetime
+
+from django.db import models
+
+from promotions.models import VIP
+from users.models import UserProfile
+
+
+class PopUp(models.Model):
+    title = models.CharField(max_length=100, verbose_name=u"标题")
+    image = models.ImageField(upload_to="popup/%Y/%m", max_length=100, verbose_name=u"弹窗")
+    url = models.URLField(max_length=200, verbose_name=u"访问地址")
+    status = models.IntegerField(choices=((0, "off"), (1, "on")), default=0, verbose_name=u"状态")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+    target_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name=u"弹窗用户")
+
+    class Meta:
+        verbose_name = u'弹窗'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title + "弹窗"
+
+
+class UserPay(models.Model):
+    payment_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name=u"用户付款")
+    amount = models.IntegerField(verbose_name=u"付款金额")
+    payment_type = models.CharField(choices=(("pay_test", u"测评购买"), ("new_vip", u"会员购买"), ("renew_vip", u"会员续费")),
+                                    max_length=30, verbose_name=u"付费类型")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u"购买时间")
+
+    class Meta:
+        verbose_name = u'付款信息'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.payment_user.username
