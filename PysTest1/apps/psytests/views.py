@@ -1,8 +1,10 @@
 
 from django.forms import model_to_dict
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound, HttpRequest, JsonResponse
-from .models import MentalEvaluation, UserEvaluation
+from django.http import HttpResponse, HttpResponseNotFound, HttpRequest, JsonResponse, HttpResponseRedirect
+from .models import MentalEvaluation, UserEvaluation, UserReviewForEvaluation, EvalQuestion, UserEvalQuestionInfo, Options
+from users.models import UserProfile
+from .forms import ReviewForm
 from django.shortcuts import redirect
 from django.template import loader
 import sys
@@ -25,7 +27,7 @@ def eval_index(request):
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
     print(eval_dict)
-    return render(request, 'eval_index.html', eval_dict)
+    return JsonResponse(eval_dict)
 
 
 def eval_list_time_order(request):
@@ -101,7 +103,7 @@ def edit_eval(request):
 
 
 def get_user_eval_list(request):
-    user_id = "111"   # request.POST.get()
+    user_id = request.POST.get("user_id")
     user_info = UserEvaluation.objects.get(user_id=user_id)
     info = []
     for item in user_info:
@@ -110,14 +112,131 @@ def get_user_eval_list(request):
     user_eval = {"status": HttpResponse.status_code, "msg": "success", "data": info}
     return JsonResponse(user_eval)
 
+def get_user_review_list(request):
+    user_id = request.POST.get("user_id")
+    user_re = UserReviewForEvaluation.objects.get(user_id=user_id)
+    data = []
+    for item in user_re:
+        mental_info = MentalEvaluation.objects.get(eval_id=item["eval_id"])
+        data.append({"title": mental_info["title"], "created_on": item["created_on"]})
 
-def test(request):
+    user_review = {"status": HttpResponse.status_code, "msg": "success",  "data": [{"title": "xxx", "created_on": "10"}]}
+    return JsonResponse(user_review)
 
-    return HttpResponse("hellllll")
+def get_user_favourite(request):
+    user_id = request.POST.get("user_id")
+    user_re = UserReviewForEvaluation.objects.get(user_id=user_id)
+    data = []
+    for item in user_re:
+        mental_info = MentalEvaluation.objects.get(eval_id=item["eval_id"])
+        data.append({"title": mental_info["title"], "price": mental_info["price"], "discount_price": mental_info["discount_price"],
+                     "nums_eval": mental_info["nums_eval"]})
+
+    user_fv = {"status": HttpResponse.status_code, "msg": "success", "data": [{"title": "xxx", "created_on": "10"}]}
+    return JsonResponse(user_fv)
+
+def get_user_info(request):
+    user_id = request.POST.get("user_id")
+    user_info = UserProfile.objects.get(user_id=user_id)
+    data = [{"gender": user_info["wsex"], "age": user_info["age"]}]
+    info = {"status": HttpResponse.status_code, "msg": "success", "data": data}
+    return JsonResponse(info)
+
+def get_eval_detail(request):
+    eval_id = request.POST.get("eval_id")
+    mental_info = MentalEvaluation.objects.get(eval_id=eval_id)
+    data = [{"title": mental_info["title"], "intro": mental_info["intro"], "ques_num": mental_info["ques_num"],
+             "report": mental_info["report"], "nums_eval": mental_info["nums_eval"], "price": mental_info["price"],
+             "discount_price": mental_info["discount_price"], "eval_id": eval_id}]
+    eval_info = {"status": HttpResponse.status_code, "msg": "success", "data": data}
+    return JsonResponse(eval_info)
+
+def get_eval_reviews(request):
+    eval_id = request.POST.get("eval_id")
+    rev_info = UserReviewForEvaluation.objects.get(eval_id=eval_id)
+    user_id = rev_info["user_id"]
+    user_info = UserProfile.objects.get(user_id=user_id)
+    data = [{"username": user_info["username"], "is_vip": user_info["is_vip"], "review": rev_info["review"], "created_on": rev_info["created_on"]}]
+    return JsonResponse({"status": HttpResponse.status_code, "msg": "success", "data": data})
+
+def get_eval_result(request, user_id):
+    user_id = request.POST.get("user_id")
+    eval_id = request.POST.get("eval_id")
+    eval_info = MentalEvaluation.objects.get(eval_id=eval_id)
+    eval_q = EvalQuestion.objects.get(eval_id=eval_id)
+    data = [{"dimension": eval_q["dimension"], "title": eval_info["title"], "intro": eval_info["intro"]}]
+    res = {"status": HttpResponse.status_code, "msg": "success", "data": data}
+    return JsonResponse(res)
+
+def get_evalq(request, eval_id):
+    eval_id = request.POST.get("eval_id")
+    q_info = EvalQuestion.objects.get(eval_id=eval_id)
+    eval_info = MentalEvaluation.objects.get(eval_id=eval_id)
+    data = []
+    for items in q_info:
+        each_q = {"ques_num": eval_info["ques_num"], "q_id": items["q_id"], "q_desc": items["q_desc"]}
+        choices = Options.objects.get(q_id=items["q_id"])
+
+        for c in choices:
+            each_q["choice"] = {}
+            each_q["choice"]["o_id"] = c["o_id"]
+            each_q["choice"]["o_desc"] = c["o_desc"]
+            data.append(each_q)
+
+    qes = {"status": HttpResponse.status_code, "msg": "success", "data": data}
+    return JsonResponse(qes)
+
+def get_related_eval(request, eval_id):
+    eval_id = request.POST.get("eval_id")
+    eval_info = MentalEvaluation.objects.get(eval_id=eval_id)
+    data = [{"title": eval_info["title"], "price": eval_info["price"], "discount_price": eval_info["discount_price"],
+             "nums_eval": eval_info["nums_eval"], "eval_id": eval_id}]
+    res = {"status": HttpResponse.status_code, "msg": "success", "data": data}
+    return HttpResponse(res)
+
+def submit_review(request, eval_id):
+    eval_id = request.POST.get("eval_id")
+    user_id = request.POST.get("user_id")
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            review = data['review']
+            usr_review = UserReviewForEvaluation(eval_id=eval_id, user_id=user_id, review=review)
+            usr_review.save()
+            return HttpResponse("Success")
+
+    else:
+        form = ReviewForm()
+    return JsonResponse({"status": 404, "msg": "Fail to submit"})
 
 
-def test1(request):
-    #foo_instance = MentalEvaluation.objects.create('')
-    return HttpResponse("hi")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

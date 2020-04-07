@@ -3,10 +3,11 @@ from datetime import datetime
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
 
 class UserProfile(AbstractUser):
-    #user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, default=None)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, default=None)
     # 微信开发
     #openid = models.CharField(verbose_name=u"微信 openid", max_length=32, default='')
     #nickname = models.CharField(verbose_name=u"微信昵称", max_length=256, default='')
@@ -22,6 +23,7 @@ class UserProfile(AbstractUser):
     #unionid = models.CharField(verbose_name=u"微信 unionid", max_length=32, default='')
     #refresh_token = models.CharField(verbose_name=u"微信 refresh_token", max_length=512, default='')
     #refresh_token_time = models.IntegerField(default=0)
+    age = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = u'用户信息'

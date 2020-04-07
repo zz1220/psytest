@@ -31,6 +31,7 @@ class MentalEvaluation(models.Model):
     nums_eval = models.IntegerField()    #user_count
     state = models.IntegerField()
     ques_num = models.IntegerField()
+    report = models.IntegerField()
 
     class Meta:
         ordering = ['eval_id']
@@ -120,4 +121,5 @@ class UserEvalQuestionInfo(models.Model):    #user choice on evals
 
     def __str__(self):
         return "用户测评选项"
+
 

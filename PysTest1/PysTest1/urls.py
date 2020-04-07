@@ -31,7 +31,7 @@ def weixin_verify(request):
 
 urlpatterns = [
     url('xadmin/', xadmin.site.urls),
-    path('', views.eval_index),
+    path('eval/', views.eval_index),
     path('add_eval/', views.add_eval),
     path('delete_eval/', views.delete_eval),
     path('latest_eval/', views.eval_list_time_order),
@@ -39,6 +39,19 @@ urlpatterns = [
     path('classify_list/', views.get_eval_type_detail),
     path('classify_list_time/', views.get_eval_type_detail_time),
     path('user_eval_list/', views.get_user_eval_list),
+    path('user_review_list/', views.get_user_review_list),
+    path('user_favourite/', views.get_user_favourite),
+    path('user_info/', views.get_user_info),
+    path('user/', views.get_user),
+    path('eval_detail/', views.get_eval_detail),
+    path('eval_reviews/', views.get_eval_reviews),
+    path('/eval_detail/<str:eval_id>', views.get_related_eval),
+    path('/eval_ques/<str:eval_id>', views.get_evalq),
+    path('/eval_choice/<str:eval_id>', views.send_eval_choice),
+    path('/eval_result/<str:user_id>', views.get_eval_result),
+    path('/eval_review/<str:eval_id>', views.submit_review),
+
+
 
     # path('weixin/', user_view.weixin_page),
     # path('weixin/bind/', user_view.weixinbind),
