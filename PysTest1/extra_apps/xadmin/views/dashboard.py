@@ -1,6 +1,7 @@
 from django import forms
 from django.apps import apps
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import render
 from django.urls.base import reverse, NoReverseMatch
 from django.template.context_processors import csrf
 from django.db.models.base import ModelBase
@@ -15,6 +16,8 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 from django.utils.http import urlencode, urlquote
 from django.views.decorators.cache import never_cache
+
+import users
 from xadmin import widgets as exwidgets
 from xadmin.layout import FormHelper
 from xadmin.models import UserSettings, UserWidget
@@ -665,3 +668,13 @@ class ModelDashboard(Dashboard, ModelAdminView):
     def get(self, request, *args, **kwargs):
         self.widgets = self.get_widgets()
         return self.template_response(self.get_template_list('views/model_dashboard.html'), self.get_context())
+
+
+def user_count(request):
+    total = users.objects.all().count()
+    total = 1
+    page = '/Users/shuaizhang/PycharmProjects/PysTest1/PysTest1/extra_apps/xadmin/templates/xadmin/base_site.html'
+    print(request, page, total)
+    return self.template_response(request,
+                  page,
+                  {'total': total})

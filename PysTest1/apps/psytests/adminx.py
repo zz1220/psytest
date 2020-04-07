@@ -2,56 +2,56 @@
 __author__ = '10k'
 __date__ = '2/23/20'
 
+from django import forms
+from django.forms import CheckboxSelectMultiple
+
 import xadmin
-from .models import MentalEvaluation, UserEvaluation, UserReviewForEvaluation, EvalQuestion, Options
+from .models import MentalEvaluation, Options
+
+
+class OptionsForm(forms.ModelForm):
+    members = forms.ModelMultipleChoiceField(widget=CheckboxSelectMultiple, queryset=Options.objects.all())
+
+    class Meta:
+        model = MentalEvaluation
+        fields = '__all__'
 
 
 class MentalEvaluationAdmin(object):
-    list_display = ('eval_id', 'eval_type', 'title', 'intro', 'price', 'created_on',
-                    'is_online', 'avatar', 'nums_eval', 'state', 'ques_num')
-    search_fields = ('eval_id', 'eval_type', 'title', 'intro', 'price', 'created_on',
-                     'is_online', 'avatar', 'nums_eval', 'state', 'ques_num')
-    list_filter = ('eval_id', 'eval_type', 'title', 'intro', 'price', 'created_on',
-                   'is_online', 'avatar', 'nums_eval', 'state', 'ques_num')
+    list_display = ('eval_id', 'eval_type', 'eval_title', 'eval_intro', 'eval_price',
+                    'eval_created_on', 'eval_is_online', 'eval_ques_nums', 'reverse_scoring',
+                    'eval_dimension', 'questions')
+    search_fields = ('eval_id', 'eval_type', 'eval_title', 'eval_intro', 'eval_price',
+                     'eval_created_on', 'eval_is_online', 'eval_ques_nums', 'reverse_scoring',
+                     'eval_dimension', 'questions')
+    list_filter = ('eval_id', 'eval_type', 'eval_title', 'eval_intro', 'eval_price',
+                   'eval_created_on', 'eval_is_online', 'eval_ques_nums', 'reverse_scoring',
+                   'eval_dimension', 'questions')
+    # data_charts = {
+    #     "user_count": {'title': u"测评统计", "x-field": 'eval_id', "y-field": "eval_price",
+    #                    "order": ('eval_created_on',)},
+    # }
+
+    form = OptionsForm
 
 
 xadmin.site.register(MentalEvaluation, MentalEvaluationAdmin)
 
 
-class EvalQuestionAdmin(object):
-    list_display = ('q_id', 'q_desc', 'eval', 'reverse_scoring', 'dimension')
-    search_fields = ('q_id', 'q_desc', 'eval', 'reverse_scoring', 'dimension')
-    list_filter = ('q_id', 'q_desc', 'eval', 'reverse_scoring', 'dimension')
-
-
-xadmin.site.register(EvalQuestion, EvalQuestionAdmin)
-
-
-class UserEvaluationAdmin(object):
-    list_display = ('mentalEvaluation', 'user_id', 'eval_id', 'eval_score',
-                    'user_count', 'eval_result', 'created_on', 'payment_status')
-    search_fields = ('mentalEvaluation', 'user_id', 'eval_id', 'eval_score',
-                     'user_count', 'eval_result', 'created_on', 'payment_status')
-    list_filter = ('mentalEvaluation', 'user_id', 'eval_id', 'eval_score',
-                   'user_count', 'eval_result', 'created_on', 'payment_status')
-
-
-xadmin.site.register(UserEvaluation, UserEvaluationAdmin)
+# class EvalQuestionAdmin(object):
+#     list_display = ('q_id', 'q_desc', 'eval', 'reverse_scoring', 'dimension')
+#     search_fields = ('q_id', 'q_desc', 'eval', 'reverse_scoring', 'dimension')
+#     list_filter = ('q_id', 'q_desc', 'eval', 'reverse_scoring', 'dimension')
+#
+#
+# xadmin.site.register(EvalQuestion, EvalQuestionAdmin)
 
 
 class OptionsAdmin(object):
-    list_display = ('nickname', 'register_date', 'is_vip')
-    search_fields = ('nickname', 'register_date', 'is_vip')
-    list_filter = ('nickname', 'register_date', 'is_vip')
+    list_display = ('option_desc', )
+    search_fields = ('option_desc', )
+    list_filter = ('option_desc', )
 
 
 xadmin.site.register(Options, OptionsAdmin)
 
-
-class UserReviewForEvaluationAdmin(object):
-    list_display = ('eval_id', 'user_id', 'review', 'created_on')
-    search_fields = ('eval_id', 'user_id', 'review', 'created_on')
-    list_filter = ('eval_id', 'user_id', 'review', 'created_on')
-
-
-xadmin.site.register(UserReviewForEvaluation, UserReviewForEvaluationAdmin)
