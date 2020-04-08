@@ -43,12 +43,15 @@ INSTALLED_APPS = [
     'psytests',
     'multiselectfield',
     'operations',
-    'promotions'
+    'promotions',
+    'corsheaders'
 ]
 
 AUTH_USER_MODEL = "users.UserProfile"
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 from django.forms.fields import Field
 
