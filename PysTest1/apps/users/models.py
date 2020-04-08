@@ -3,12 +3,12 @@ from datetime import datetime
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import User
+from django.conf import settings
 from future.backports.datetime import timedelta
 
 
 class UserProfile(AbstractUser):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, default=None)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, default=None)
     # 微信开发
     #openid = models.CharField(verbose_name=u"微信 openid", max_length=32, default='')
     #nickname = models.CharField(verbose_name=u"微信昵称", max_length=256, default='')

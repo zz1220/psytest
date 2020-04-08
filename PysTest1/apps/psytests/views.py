@@ -1,6 +1,7 @@
 from django.forms import model_to_dict
 from django.shortcuts import render
-
+from django.conf import settings
+User = settings.AUTH_USER_MODEL
 from django.http import HttpResponse, HttpResponseNotFound, HttpRequest, JsonResponse, HttpResponseRedirect
 from .models import MentalEvaluation, UserEvaluation, UserReviewForEvaluation, EvalQuestion, UserEvalQuestionInfo, Options
 from users.models import UserProfile
@@ -111,6 +112,7 @@ def edit_eval(request):
     item.title = "testtttt"
     item.save()
     return redirect('http://127.0.0.1:8000')
+
 
 
 def get_user_eval_list(request):

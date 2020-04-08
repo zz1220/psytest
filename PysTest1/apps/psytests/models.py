@@ -2,7 +2,7 @@
 from datetime import datetime
 
 from django.db import models
-from django.contrib.auth.models import User
+
 from multiselectfield import MultiSelectField
 import sys
 import importlib
@@ -15,35 +15,9 @@ if sys.getdefaultencoding() != "utf-8":
     sys.setdefaultencoding("utf-8")
 
 
-class MentalEvaluation(models.Model):
-    eval_id = models.CharField(max_length=200, primary_key=True)
-    eval_type = models.CharField(choices=(("type1", u"成长"),
-                                          ("type2", u"情感"),
-                                          ("type3", u"人际关系")), max_length=100)
-    title = models.CharField(max_length=100, unique=True)
-    intro = models.TextField()
-    price = models.CharField(max_length=20)
-    created_on = models.CharField(max_length=200)
-    is_online = models.CharField(max_length=30, choices=(("online", u"在线"),
-                                                         ("offline", u"离线"),
-                                                         ("inprogress", u"完善中")))
-    avatar = models.CharField(max_length=200)    #location of avatar in frontend
-    nums_eval = models.IntegerField()    #user_count
-    state = models.IntegerField()
-    ques_num = models.IntegerField()
-    report = models.IntegerField()
-
-    class Meta:
-        ordering = ['eval_id']
-        verbose_name = u"心理测评"
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.title
-
 
 class EvalQuestion(models.Model):
-    eval = models.ForeignKey(MentalEvaluation, on_delete=models.CASCADE, verbose_name=u"对应测评")
+    #eval = models.ForeignKey(MentalEvaluation, on_delete=models.CASCADE, verbose_name=u"对应测评")
     q_id = models.IntegerField(auto_created=True, verbose_name=u"问题id")
     q_desc = models.CharField(max_length=3000, verbose_name=u"问题描述")
     reverse_scoring = models.BooleanField(default=False, choices=((False, u"正向"), (True, u"反向")), verbose_name=u"反向计分")
@@ -73,26 +47,23 @@ class Options(models.Model):
     def __str__(self):
         return self.o_desc
 
-
 class MentalEvaluation(models.Model):
-    eval_id = models.CharField(max_length=200, primary_key=True, verbose_name=u"测评id")
+    eval_id = models.CharField(max_length=200, primary_key=True)
     eval_type = models.CharField(choices=(("type1", u"成长"),
                                           ("type2", u"情感"),
-                                          ("type3", u"人际关系"),
-                                          ("type4", u"其他")), max_length=100,
-                                 verbose_name=u"测评类型")
-    title = models.CharField(max_length=100, unique=True, verbose_name=u"标题")
-    intro = models.TextField(max_length=2000, verbose_name=u"测评简介")
-    price = models.CharField(max_length=20, verbose_name=u"测评价格")
-    created_on = models.DateTimeField(max_length=200, verbose_name=u"测评创建日期", default=datetime.now)
+                                          ("type3", u"人际关系")), max_length=100)
+    title = models.CharField(max_length=100, unique=True)
+    intro = models.TextField()
+    price = models.CharField(max_length=20)
+    created_on = models.CharField(max_length=200)
     is_online = models.CharField(max_length=30, choices=(("online", u"在线"),
-                                                              ("offline", u"离线"),
-                                                              ("inprogress", u"完善中")),
-                                      verbose_name=u"测评上线状态")
+                                                         ("offline", u"离线"),
+                                                         ("inprogress", u"完善中")))
     avatar = models.CharField(max_length=200)    #location of avatar in frontend
-    #ques_nums = models.IntegerField(verbose_name=u"测评问题数量")  # user_count
-    # state = models.IntegerField()
+    nums_eval = models.IntegerField()    #user_count
+    state = models.IntegerField()
     ques_num = models.IntegerField()
+    report = models.IntegerField()
     reverse_scoring = models.BooleanField(default=False, choices=((False, u"正向"), (True, u"反向")),
                                           verbose_name=u"反向计分")
     eval_dimension = models.IntegerField(default=1, verbose_name=u"问题维度",
@@ -106,25 +77,10 @@ class MentalEvaluation(models.Model):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.eval_title
+        return self.title
 
 
-class EvalQuestion(models.Model):
-    eval = models.ForeignKey(MentalEvaluation, on_delete=models.CASCADE, verbose_name=u"对应测评")
-    q_id = models.IntegerField(auto_created=True, verbose_name=u"问题id")
-    q_desc = models.CharField(max_length=3000, verbose_name=u"问题描述")
-    reverse_scoring = models.BooleanField(default=False, choices=((False, u"正向"), (True, u"反向")),
-                                          verbose_name=u"反向计分")
-    dimension = models.IntegerField(default=1, verbose_name=u"问题维度",
-                                    choices=((1, u"一"), (2, u"二"), (3, u"三")))
 
-    class Meta:
-        ordering = ['q_id']
-        verbose_name = u"测评问题"
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.q_desc[:10] + "..."
 
 class UserEvaluation(models.Model):
     #mentalEvaluation = models.ManyToManyField(MentalEvaluation)
@@ -175,5 +131,8 @@ class UserEvalQuestionInfo(models.Model):    #user choice on evals
 
     def __str__(self):
         return "用户测评选项"
+
+
+
 
 
