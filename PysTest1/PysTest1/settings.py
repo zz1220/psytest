@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "users.UserProfile"
 
 MIDDLEWARE = [
+    'utils.middlewares.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -95,7 +96,7 @@ DATABASES = {
         'NAME': "coolbrainpsytest1",
         'USER': 'root',
         'PASSWORD': "Coolbrain123!",
-        'HOST': "127.0.0.1"
+        'HOST': "132.232.91.198"
     }
 }
 
