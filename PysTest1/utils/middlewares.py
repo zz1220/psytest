@@ -19,6 +19,9 @@ class AuthenticationMiddleware(MiddlewareMixin):
         每个请求在到达中间级之前被执行
         """
 
+        if request.path.startswith('/xadmin'):
+            return self.get_response(request)
+
         ticket = request.META.get('HTTP_TICKET')
         if not ticket:
             return JsonResponse(data={'msg': '无效ticket，禁止访问该接口'}, status=400)
@@ -47,4 +50,3 @@ class AuthenticationMiddleware(MiddlewareMixin):
                 },
                 status=500
             )
-
