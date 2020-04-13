@@ -49,11 +49,11 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "users.UserProfile"
 
 MIDDLEWARE = [
-    'utils.middlewares.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'utils.middlewares.DisableCSRF',
+    'utils.middlewares.AuthenticationMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'utils.middlewares.DisableCSRF',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsPostCsrfMiddleware',
