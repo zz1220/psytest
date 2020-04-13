@@ -124,3 +124,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+CORS_ORIGIN_ALLOW_ALL = True
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'Ticket',
+]
+ALLOWED_HOSTS = ['*', ]
