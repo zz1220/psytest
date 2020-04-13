@@ -52,6 +52,7 @@ AUTH_USER_MODEL = "users.UserProfile"
 MIDDLEWARE = [
     'utils.middlewares.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'utils.middlewares.DisableCSRF',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

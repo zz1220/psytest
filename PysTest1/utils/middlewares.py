@@ -3,12 +3,19 @@ import logging
 import requests
 
 from django.http.response import (
-    HttpResponseForbidden,
     JsonResponse
 )
 from django.middleware.common import MiddlewareMixin
 
 logger = logging.getLogger(__name__)
+
+
+class DisableCSRF(MiddlewareMixin):
+    """禁止CSRF"""
+
+    def __call__(self, request):
+        """"""
+        setattr(request, '_dont_enforce_csrf_checks', True)
 
 
 class AuthenticationMiddleware(MiddlewareMixin):
