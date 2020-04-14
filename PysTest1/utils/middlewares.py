@@ -27,7 +27,7 @@ class AuthenticationMiddleware(MiddlewareMixin):
         每个请求在到达中间级之前被执行
         """
 
-        if request.path.startswith('/xadmin'):
+        if request.path.startswith('/xadmin') or request.path.startswith('/static'):
             return self.get_response(request)
 
         ticket = request.META.get('HTTP_TICKET')
