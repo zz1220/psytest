@@ -78,7 +78,7 @@ def get_eval_type_detail(request):
             type_list.append({"title": item["title"], "price": item["price"], "nums_eval": item["nums_eval"]})
     type_dict = {"status": HttpResponse.status_code, "msg": "success", "data": type_list}
     type_dict = json.dumps(type_dict)
-    return HttpResponse(type_dict, mimetype="application/json")
+    return HttpResponse(type_dict, content_type="application/json")
 
 
 def get_eval_type_detail_time(request):
@@ -207,7 +207,7 @@ def get_evalq(request, eval_id):
 
     qes = {"status": HttpResponse.status_code, "msg": "success", "data": data}
     qes = json.dumps(qes)
-    return HttpResponse(qes, mimetype="application/json")
+    return HttpResponse(qes, content="application/json")
 
 def get_related_eval(request, eval_id):
     eval_id = request.POST.get("eval_id")
