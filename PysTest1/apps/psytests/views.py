@@ -91,7 +91,7 @@ def get_eval_type_detail_time(request):
                               "created_on": item["created_on"]})
     type_dict = {"status": HttpResponse.status_code, "msg": "success", "data": type_list}
     type_dict = json.dumps(type_dict)
-    return HttpResponse(type_dict, mimetype="application/json")
+    return HttpResponse(type_dict, content_type="application/json")
 
 
 def delete_eval(request):
@@ -127,7 +127,7 @@ def get_user_eval_list(request):
                      "discount_price": mental_info["discount_price"]})
     user_eval = {"status": HttpResponse.status_code, "msg": "success", "data": info}
     user_eval = json.dumps(user_eval)
-    return HttpResponse(user_eval, mimetype="application/json")
+    return HttpResponse(user_eval, content_type="application/json")
 
 def get_user_review_list(request):
     user_id = request.POST.get("user_id")
@@ -139,7 +139,7 @@ def get_user_review_list(request):
 
     user_review = {"status": HttpResponse.status_code, "msg": "success",  "data": [{"title": "xxx", "created_on": "10"}]}
     user_review = json.dumps(user_review)
-    return HttpResponse(user_review, mimetype="application/json")
+    return HttpResponse(user_review, content_type="application/json")
 
 def get_user_favourite(request):
     user_id = request.POST.get("user_id")
@@ -152,7 +152,7 @@ def get_user_favourite(request):
 
     user_fv = {"status": HttpResponse.status_code, "msg": "success", "data": [{"title": "xxx", "created_on": "10"}]}
     user_fv = json.dumps(user_fv)
-    return HttpResponse(user_fv, mimetype="application/json")
+    return HttpResponse(user_fv, content_type="application/json")
 
 def get_user_info(request):
     user_id = request.POST.get("user_id")
@@ -169,7 +169,7 @@ def get_eval_detail(request):
              "discount_price": mental_info["discount_price"], "eval_id": eval_id}]
     eval_info = {"status": HttpResponse.status_code, "msg": "success", "data": data}
     eval_info = json.dumps(eval_info)
-    return HttpResponse(eval_info, mimetype="application/json")
+    return HttpResponse(eval_info, content_type="application/json")
 
 def get_eval_reviews(request):
     eval_id = request.POST.get("eval_id")
@@ -178,7 +178,7 @@ def get_eval_reviews(request):
     user_info = UserProfile.objects.get(user_id=user_id)
     data = [{"username": user_info["username"], "is_vip": user_info["is_vip"], "review": rev_info["review"], "created_on": rev_info["created_on"]}]
     data = json.dumps(data)
-    return HttpResponse(data, mimetype="application/json")
+    return HttpResponse(data, content_type="application/json")
 
 def get_eval_result(request, user_id):
     user_id = request.POST.get("user_id")
@@ -188,7 +188,7 @@ def get_eval_result(request, user_id):
     data = [{"dimension": eval_q["eval_dimension"], "title": eval_info["title"], "intro": eval_info["intro"]}]
     res = {"status": HttpResponse.status_code, "msg": "success", "data": data}
     res = json.dumps(res)
-    return HttpResponse(res, mimetype="application/json")
+    return HttpResponse(res, content_type="application/json")
 
 def get_evalq(request, eval_id):
     eval_id = request.POST.get("eval_id")
@@ -207,7 +207,7 @@ def get_evalq(request, eval_id):
 
     qes = {"status": HttpResponse.status_code, "msg": "success", "data": data}
     qes = json.dumps(qes)
-    return HttpResponse(qes, content="application/json")
+    return HttpResponse(qes, content_type="application/json")
 
 def get_related_eval(request, eval_id):
     eval_id = request.POST.get("eval_id")
@@ -216,7 +216,7 @@ def get_related_eval(request, eval_id):
              "nums_eval": eval_info["nums_eval"], "eval_id": eval_id}]
     res = {"status": HttpResponse.status_code, "msg": "success", "data": data}
     res = json.dumps(res)
-    return HttpResponse(res, mimetype="application/json")
+    return HttpResponse(res, content_type="application/json")
 
 def submit_review(request, eval_id):
     eval_id = request.POST.get("eval_id")
