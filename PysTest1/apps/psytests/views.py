@@ -14,7 +14,7 @@ from django.template import loader
 import sys
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-from django.utils import simplejson
+
 
 sys.getfilesystemencoding()
 
@@ -51,7 +51,7 @@ def eval_list_time_order(request):
                      "data": evals}  # json.dumps(evals) unicode error
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
-    eval_dict = simplejson.dumps(eval_dict)
+    eval_dict = json.dumps(eval_dict)
     return HttpResponse(eval_dict, mimetype="application/json")
 
 
@@ -77,7 +77,7 @@ def get_eval_type_detail(request):
         if type_name in item["eval_type"]:
             type_list.append({"title": item["title"], "price": item["price"], "nums_eval": item["nums_eval"]})
     type_dict = {"status": HttpResponse.status_code, "msg": "success", "data": type_list}
-    type_dict = simplejson.dumps(type_dict)
+    type_dict = json.dumps(type_dict)
     return HttpResponse(type_dict, mimetype="application/json")
 
 
@@ -90,7 +90,7 @@ def get_eval_type_detail_time(request):
             type_list.append({"title": item["title"], "price": item["price"], "nums_eval": item["nums_eval"],
                               "created_on": item["created_on"]})
     type_dict = {"status": HttpResponse.status_code, "msg": "success", "data": type_list}
-    type_dict = simplejson.dumps(type_dict)
+    type_dict = json.dumps(type_dict)
     return HttpResponse(type_dict, mimetype="application/json")
 
 
@@ -126,7 +126,7 @@ def get_user_eval_list(request):
         info.append({"title": mental_info["title"], "price": mental_info["price"],
                      "discount_price": mental_info["discount_price"]})
     user_eval = {"status": HttpResponse.status_code, "msg": "success", "data": info}
-    user_eval = simplejson.dumps(user_eval)
+    user_eval = json.dumps(user_eval)
     return HttpResponse(user_eval, mimetype="application/json")
 
 def get_user_review_list(request):
@@ -138,7 +138,7 @@ def get_user_review_list(request):
         data.append({"title": mental_info["title"], "created_on": item["created_on"]})
 
     user_review = {"status": HttpResponse.status_code, "msg": "success",  "data": [{"title": "xxx", "created_on": "10"}]}
-    user_review = simplejson.dumps(user_review)
+    user_review = json.dumps(user_review)
     return HttpResponse(user_review, mimetype="application/json")
 
 def get_user_favourite(request):
@@ -151,7 +151,7 @@ def get_user_favourite(request):
                      "nums_eval": mental_info["nums_eval"]})
 
     user_fv = {"status": HttpResponse.status_code, "msg": "success", "data": [{"title": "xxx", "created_on": "10"}]}
-    user_fv = simplejson.dumps(user_fv)
+    user_fv = json.dumps(user_fv)
     return HttpResponse(user_fv, mimetype="application/json")
 
 def get_user_info(request):
@@ -168,7 +168,7 @@ def get_eval_detail(request):
              "report": mental_info["report"], "nums_eval": mental_info["nums_eval"], "price": mental_info["price"],
              "discount_price": mental_info["discount_price"], "eval_id": eval_id}]
     eval_info = {"status": HttpResponse.status_code, "msg": "success", "data": data}
-    eval_info = simplejson.dumps(eval_info)
+    eval_info = json.dumps(eval_info)
     return HttpResponse(eval_info, mimetype="application/json")
 
 def get_eval_reviews(request):
@@ -177,7 +177,7 @@ def get_eval_reviews(request):
     user_id = rev_info["user_id"]
     user_info = UserProfile.objects.get(user_id=user_id)
     data = [{"username": user_info["username"], "is_vip": user_info["is_vip"], "review": rev_info["review"], "created_on": rev_info["created_on"]}]
-    data = simplejson.dumps(data)
+    data = json.dumps(data)
     return HttpResponse(data, mimetype="application/json")
 
 def get_eval_result(request, user_id):
@@ -187,7 +187,7 @@ def get_eval_result(request, user_id):
     eval_q = EvalQuestion.objects.get(eval_id=eval_id)
     data = [{"dimension": eval_q["eval_dimension"], "title": eval_info["title"], "intro": eval_info["intro"]}]
     res = {"status": HttpResponse.status_code, "msg": "success", "data": data}
-    res = simplejson.dumps(res)
+    res = json.dumps(res)
     return HttpResponse(res, mimetype="application/json")
 
 def get_evalq(request, eval_id):
@@ -206,7 +206,7 @@ def get_evalq(request, eval_id):
             data.append(each_q)
 
     qes = {"status": HttpResponse.status_code, "msg": "success", "data": data}
-    qes = simplejson.dumps(qes)
+    qes = json.dumps(qes)
     return HttpResponse(qes, mimetype="application/json")
 
 def get_related_eval(request, eval_id):
@@ -215,7 +215,7 @@ def get_related_eval(request, eval_id):
     data = [{"title": eval_info["title"], "price": eval_info["price"], "discount_price": eval_info["discount_price"],
              "nums_eval": eval_info["nums_eval"], "eval_id": eval_id}]
     res = {"status": HttpResponse.status_code, "msg": "success", "data": data}
-    res = simplejson.dumps(res)
+    res = json.dumps(res)
     return HttpResponse(res, mimetype="application/json")
 
 def submit_review(request, eval_id):
