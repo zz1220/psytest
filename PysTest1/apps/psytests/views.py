@@ -82,7 +82,7 @@ def get_eval_type_detail(request):
 
 
 def get_eval_type_detail_time(request):
-    data = MentalEvaluation.objects.order_by("created_on").values()
+    data = MentalEvaluation.objects.order_by("-created_on").values()
     type_list = []
     type_name = request.POST.get("eval_type")
     for item in data:
