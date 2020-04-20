@@ -14,6 +14,10 @@ from django.template import loader
 import sys
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from snippets.models import Snippet
+from snippets.serializers import SnippetSerializer
 
 
 sys.getfilesystemencoding()
@@ -72,8 +76,10 @@ def get_eval_types(request):
 def get_eval_type_detail(request):
     data = MentalEvaluation.objects.all().values()
     type_list = []
-    type_name = request.POST["eval_type"]
-    type_name = str(type_name)
+    serializer = SnippetSerializer(data=request.data)
+
+    serializer.save()
+    type_name = serializer.data.eval_type
     for item in data:
         if type_name == item["eval_type"]:
             type_list.append({"title": item["title"], "price": item["price"], "nums_eval": item["nums_eval"]})
