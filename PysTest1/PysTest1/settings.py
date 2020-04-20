@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'multiselectfield',
     'operations',
     'promotions',
-    'corsheaders'
+    'corsheaders',
+    'rest_framework',
+    'snippets.apps.SnippetsConfig'
 ]
 
 AUTH_USER_MODEL = "users.UserProfile"
