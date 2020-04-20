@@ -74,7 +74,7 @@ def get_eval_type_detail(request):
     type_list = []
     type_name = request.POST.get("eval_type")
     for item in data:
-        if type_name in item["eval_type"]:
+        if type_name == item["eval_type"]:
             type_list.append({"title": item["title"], "price": item["price"], "nums_eval": item["nums_eval"]})
     type_dict = {"status": HttpResponse.status_code, "msg": "success", "data": type_list}
     type_dict = json.dumps(type_dict)
@@ -82,11 +82,11 @@ def get_eval_type_detail(request):
 
 
 def get_eval_type_detail_time(request):
-    data = MentalEvaluation.objects.all().order_by('created_on')
+    data = MentalEvaluation.objects.all().values().order_by("-created_on")
     type_list = []
     type_name = request.POST.get("eval_type")
     for item in data:
-        if type_name in item["eval_type"]:
+        if type_name == item["eval_type"]:
             type_list.append({"title": item["title"], "price": item["price"], "nums_eval": item["nums_eval"],
                               "created_on": item["created_on"]})
     type_dict = {"status": HttpResponse.status_code, "msg": "success", "data": type_list}
