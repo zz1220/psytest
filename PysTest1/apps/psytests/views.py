@@ -72,7 +72,8 @@ def get_eval_types(request):
 def get_eval_type_detail(request):
     data = MentalEvaluation.objects.all().values()
     type_list = []
-    type_name = request.POST.get("eval_type")
+    type_name = request.POST["eval_type"]
+    type_name = str(type_name)
     for item in data:
         if type_name == item["eval_type"]:
             type_list.append({"title": item["title"], "price": item["price"], "nums_eval": item["nums_eval"]})
@@ -82,7 +83,7 @@ def get_eval_type_detail(request):
 
 
 def get_eval_type_detail_time(request):
-    data = MentalEvaluation.objects.all().values().order_by("-created_on")
+    data = MentalEvaluation.objects.all().order_by("-created_on")
     type_list = []
     type_name = request.POST.get("eval_type")
     for item in data:
