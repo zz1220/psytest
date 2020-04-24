@@ -44,8 +44,6 @@ INSTALLED_APPS = [
     'operations',
     'promotions',
     'corsheaders',
-    'rest_framework',
-    'snippets.apps.SnippetsConfig'
 ]
 
 AUTH_USER_MODEL = "users.UserProfile"

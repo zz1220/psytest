@@ -14,10 +14,7 @@ from django.template import loader
 import sys
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from snippets.models import Snippet
-from snippets.serializers import SnippetSerializer
+
 
 
 sys.getfilesystemencoding()
