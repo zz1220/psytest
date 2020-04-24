@@ -76,10 +76,7 @@ def get_eval_types(request):
 def get_eval_type_detail(request):
     data = MentalEvaluation.objects.all().values()
     type_list = []
-    serializer = SnippetSerializer(data=request.data)
-
-    serializer.save()
-    type_name = serializer.data.eval_type
+    type_name = request.GET.get("eval_type")
     for item in data:
         if type_name == item["eval_type"]:
             type_list.append({"title": item["title"], "price": item["price"], "nums_eval": item["nums_eval"]})
@@ -91,7 +88,7 @@ def get_eval_type_detail(request):
 def get_eval_type_detail_time(request):
     data = MentalEvaluation.objects.all().order_by("-created_on")
     type_list = []
-    type_name = request.POST.get("eval_type")
+    type_name = request.GET.get("eval_type")
     for item in data:
         if type_name == item["eval_type"]:
             type_list.append({"title": item["title"], "price": item["price"], "nums_eval": item["nums_eval"],
@@ -124,8 +121,7 @@ def edit_eval(request):
 
 
 def get_user_eval_list(request):
-    user_id = request.POST.get("eval_user_id")
-
+    user_id = request.GET.get("user_id")
     user_info = UserEvaluation.objects.get(user_id=user_id)
     info = []
     for item in user_info:
@@ -137,7 +133,7 @@ def get_user_eval_list(request):
     return HttpResponse(user_eval, content_type="application/json")
 
 def get_user_review_list(request):
-    user_id = request.POST.get("user_id")
+    user_id = request.GET.get("user_id")
     user_re = UserReviewForEvaluation.objects.get(user_id=user_id)
     data = []
     for item in user_re:
@@ -149,7 +145,7 @@ def get_user_review_list(request):
     return HttpResponse(user_review, content_type="application/json")
 
 def get_user_favourite(request):
-    user_id = request.POST.get("user_id")
+    user_id = request.GET.get("user_id")
     user_re = UserReviewForEvaluation.objects.get(user_id=user_id)
     data = []
     for item in user_re:
@@ -162,14 +158,14 @@ def get_user_favourite(request):
     return HttpResponse(user_fv, content_type="application/json")
 
 def get_user_info(request):
-    user_id = request.POST.get("user_id")
+    user_id = request.GET.get("user_id")
     user_info = UserProfile.objects.get(user_id=user_id)
     data = [{"gender": user_info["wsex"], "age": user_info["age"]}]
     info = {"status": HttpResponse.status_code, "msg": "success", "data": data}
     return JsonResponse(info)
 
 def get_eval_detail(request):
-    eval_id = request.POST.get("eval_id")
+    eval_id = request.GET.get("eval_id")
     mental_info = MentalEvaluation.objects.get(eval_id=eval_id)
     data = [{"title": mental_info["title"], "intro": mental_info["intro"], "ques_num": mental_info["ques_num"],
              "report": mental_info["report"], "nums_eval": mental_info["nums_eval"], "price": mental_info["price"],
@@ -179,7 +175,7 @@ def get_eval_detail(request):
     return HttpResponse(eval_info, content_type="application/json")
 
 def get_eval_reviews(request):
-    eval_id = request.POST.get("eval_id")
+    eval_id = request.GET.get("eval_id")
     rev_info = UserReviewForEvaluation.objects.get(eval_id=eval_id)
     user_id = rev_info["user_id"]
     user_info = UserProfile.objects.get(user_id=user_id)
@@ -188,8 +184,8 @@ def get_eval_reviews(request):
     return HttpResponse(data, content_type="application/json")
 
 def get_eval_result(request, user_id):
-    user_id = request.POST.get("user_id")
-    eval_id = request.POST.get("eval_id")
+    user_id = request.GET.get("user_id")
+    eval_id = request.GET.get("eval_id")
     eval_info = MentalEvaluation.objects.get(eval_id=eval_id)
     eval_q = EvalQuestion.objects.get(eval_id=eval_id)
     data = [{"dimension": eval_q["eval_dimension"], "title": eval_info["title"], "intro": eval_info["intro"]}]
@@ -198,7 +194,7 @@ def get_eval_result(request, user_id):
     return HttpResponse(res, content_type="application/json")
 
 def get_evalq(request, eval_id):
-    eval_id = request.POST.get("eval_id")
+    eval_id = request.GET.get("eval_id")
     q_info = EvalQuestion.objects.get(eval_id=eval_id)
     eval_info = MentalEvaluation.objects.get(eval_id=eval_id)
     data = []
@@ -217,7 +213,7 @@ def get_evalq(request, eval_id):
     return HttpResponse(qes, content_type="application/json")
 
 def get_related_eval(request, eval_id):
-    eval_id = request.POST.get("eval_id")
+    eval_id = request.GET.get("eval_id")
     eval_info = MentalEvaluation.objects.get(eval_id=eval_id)
     data = [{"title": eval_info["title"], "price": eval_info["price"], "discount_price": eval_info["discount_price"],
              "nums_eval": eval_info["nums_eval"], "eval_id": eval_id}]
@@ -226,8 +222,8 @@ def get_related_eval(request, eval_id):
     return HttpResponse(res, content_type="application/json")
 
 def submit_review(request, eval_id):
-    eval_id = request.POST.get("eval_id")
-    user_id = request.POST.get("user_id")
+    eval_id = request.GET.get("eval_id")
+    user_id = request.GET.get("user_id")
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
