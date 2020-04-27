@@ -62,7 +62,7 @@ class MentalEvaluation(models.Model):
     is_online = models.CharField(max_length=30, choices=(("online", u"在线"),
                                                          ("offline", u"离线"),
                                                          ("inprogress", u"完善中")))
-    avatar = models.CharField(max_length=200)    #location of avatar in frontend
+    avatar = models.ImageField(upload_to="evalPics/%Y/%m", max_length=100, verbose_name=u"测评图")    #location of avatar in frontend
     nums_eval = models.IntegerField()    #user_count
     state = models.IntegerField()
     ques_num = models.IntegerField()

@@ -204,7 +204,7 @@ def get_eval_reviews(request):
     eval_rev = json.dumps(eval_rev)
     return HttpResponse(eval_rev, content_type="application/json")
 
-def get_eval_result(request, user_id):   # has problem 
+def get_eval_result(request, user_id):   # has problem
     user_id="01"
     eval_id="11"
     # user_id = request.POST.get("user_id")

@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 __author__ = '10k'
 __date__ = '2/23/20'
 
@@ -20,13 +21,13 @@ class OptionsForm(forms.ModelForm):
 class MentalEvaluationAdmin(object):
     list_display = ('eval_id', 'eval_type', 'eval_title', 'eval_intro', 'eval_price',
                     'eval_created_on', 'eval_is_online', 'eval_ques_nums', 'reverse_scoring',
-                    'eval_dimension', 'questions')
+                    'eval_dimension', 'questions', 'avatar')
     search_fields = ('eval_id', 'eval_type', 'eval_title', 'eval_intro', 'eval_price',
                      'eval_created_on', 'eval_is_online', 'eval_ques_nums', 'reverse_scoring',
-                     'eval_dimension', 'questions')
+                     'eval_dimension', 'questions', 'avatar')
     list_filter = ('eval_id', 'eval_type', 'eval_title', 'eval_intro', 'eval_price',
                    'eval_created_on', 'eval_is_online', 'eval_ques_nums', 'reverse_scoring',
-                   'eval_dimension', 'questions')
+                   'eval_dimension', 'questions', 'avatar')
     # data_charts = {
     #     "user_count": {'title': u"测评统计", "x-field": 'eval_id', "y-field": "eval_price",
     #                    "order": ('eval_created_on',)},
