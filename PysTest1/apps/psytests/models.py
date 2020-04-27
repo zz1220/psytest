@@ -39,7 +39,7 @@ class Options(models.Model):
     o_id = models.IntegerField(auto_created=True, verbose_name=u"选项id")
     o_desc = models.CharField(max_length=3000, verbose_name=u"选项描述")
     q_id = models.CharField(max_length=200, verbose_name=u"问题id")
-    #question = models.ManyToManyField(EvalQuestion, verbose_name=u'对应问题')
+    question = models.ManyToManyField(EvalQuestion, verbose_name=u'对应问题')
 
     class Meta:
         #  ordering = ['o_id']
